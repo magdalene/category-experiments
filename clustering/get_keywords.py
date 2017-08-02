@@ -1,4 +1,5 @@
 import csv
+import json
 import os
 from multiprocessing import Pool
 
@@ -57,9 +58,10 @@ def iter_cluster_info(input_dir):
     """
     for filename in os.listdir(input_dir):
         with open(os.path.join(input_dir, filename), 'rt', encoding='utf-8') as f:
-            text = f.read()
-        text = text.replace('<doc>', '').replace('</doc>', '')
-        yield {'name': filename, 'text': text}
+            texts = []
+            for line in f:
+                texts.append(json.loads(line)['text'])
+        yield {'name': filename, 'text': '\n'.join(texts)}
 
 
 @click.command()
