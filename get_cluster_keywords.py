@@ -9,8 +9,8 @@ import click
 from rake_nltk import Rake
 # modified from: https://github.com/davidadamojr/TextRank
 from ranked_textrank import extract_key_phrases
-# https://github.com/titipata/keyphrase_extraction
-from keyphrase_extraction import keyphrase_extraction_tfidf
+# https://github.com/titipata/keyphrase_extraction (renamed locally for lack of confusion)
+from keyphrase_extraction_tfidf import keyphrase_extraction_tfidf
 
 N_KEYWORDS = 20
 

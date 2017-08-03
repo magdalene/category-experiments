@@ -4,19 +4,7 @@ import os
 
 import click
 
-def get_category_info(categories_dir):
-    """Load category info from human-labeled files."""
-    high_level_cats = set()
-    low_level_cats = set()
-    for filename in os.listdir(categories_dir):
-        with open(os.path.join(categories_dir, filename), 'rt', encoding='utf-8') as f:
-            catname = filename.replace('_', ' ').replace('.csv', '')
-            high_level_cats.add(catname)
-            for line in f:
-                line_split = line.strip().split(',')
-                if line_split[-1].startswith('yes'):
-                    low_level_cats.add(line_split[0])
-    return high_level_cats, low_level_cats
+from utils import get_category_info
 
 def get_cluster_performance(cluster_path, high_level_cats, low_level_cats):
     """Get the performance of a cluster, for high-level cat and low-level cat."""
