@@ -14,9 +14,9 @@ Wikinews has 13 top-level categories (e.g., Politics and Conflicts, Science and 
 * `mark_categories.py` -- move the categories from the body of the text, to a separate field in the json object for each document
 * [List of countries](https://github.com/mledoze/countries) -- to filter out and exclude country categories
 * for each top-level category, generate a csv with rows that contain low level category name,count,yes|no|place (TODO: write a script for this)
-** low level category name -- string like "Internet" (occuring in Science_and_technology.csv)
-** count -- number of documents in which this low level category co-occurs with the top-level category
-** yes|no|place -- only categories marked "yes" is included in training or evaluation (this is a human judgment, about whether the category actually belongs to the top-level category, and also whether it's an interesting category for the particular use-case)
+    * low level category name -- string like "Internet" (occuring in Science_and_technology.csv)
+    * count -- number of documents in which this low level category co-occurs with the top-level category
+    * yes|no|place -- only categories marked "yes" is included in training or evaluation (this is a human judgment, about whether the category actually belongs to the top-level category, and also whether it's an interesting category for the particular use-case)
 * Each learning script (`cluster.py`, `classify.py`) uses [nltk](https://github.com/nltk/nltk) for tokenization and stemming, and then uses tf-idf vectors to represent the text
 
 
