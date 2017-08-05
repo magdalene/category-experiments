@@ -29,8 +29,9 @@ def get_data_and_labels(raw_data, categories):
     vectorizer = TfidfVectorizer(tokenizer=tokenize, stop_words='english')
     raw_labels = [d['categories'] for d in data]
     data = vectorizer.fit_transform([d['text'] for d in data])
-    labels = MultiLabelBinarizer().fit_transform(raw_labels)
-    return data, labels
+    mlb = MultiLabelBinarizer()
+    labels = mlb.fit_transform(raw_labels)
+    return data, labels, vectorizer, mlb
 
 
 def classify(data, labels, train_full_model=True):
@@ -57,17 +58,25 @@ def classify(data, labels, train_full_model=True):
 @click.option('--category_dir', '-c', help='Directory containing human-labeled categories, for '
                                           'which categories should be included in the analysis,')
 @click.option('--model_output', '-o', type=str, default=None, help='Filename for classifier output')
+@click.option('--vectorizor_output', '-v', type=str, default=None, help='Filename for vectorizor output')
+@click.option('--label_binarizer_output', '-l', type=str, default=None, help='Filename for label binarizer output')
 @click.option('--cat_type', default='all', help='high_level|low_level|all')
-def main(input_dir, category_dir, model_output, cat_type):
+def main(input_dir, category_dir, model_output, vectorizor_output, label_binarizer_output, cat_type):
     high_level_cats, low_level_cats = get_category_info(category_dir)
     raw_data = load_data(input_dir)
     cats = high_level_cats if cat_type == 'high_level' else (
         low_level_cats if cat_type == 'low_level' else high_level_cats.union(low_level_cats))
-    data, labels = get_data_and_labels(raw_data, list(cats))
+    data, labels, vectorizor, label_binarizer = get_data_and_labels(raw_data, list(cats))
     _, model = classify(data, labels, train_full_model=(model_output is not None))
     if model_output:
         with open(model_output, 'wb') as f:
             pickle.dump(model, f)
+    if vectorizor_output:
+        with open(vectorizor_output, 'wb') as f:
+            pickle.dump(vectorizor, f)
+    if label_binarizer_output:
+        with open(label_binarizer_output, 'wb') as f:
+            pickle.dump(label_binarizer, f)
 
 if __name__ == '__main__':
     main()
