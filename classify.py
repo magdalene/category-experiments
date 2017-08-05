@@ -3,9 +3,7 @@
 This means multilabel classification (a single document often has many different
 categories), so I'm using SVM with one vs rest.
 """
-import json
 import pickle
-import os
 
 import click
 from sklearn.feature_extraction.text import TfidfVectorizer
